@@ -9,6 +9,8 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtGui import QFont
 from PyQt6.QtCore import QTimer
+from datetime import datetime
+import time
 
 
 class MainWindow(QMainWindow):
@@ -19,7 +21,7 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("Timey")
         self.setGeometry(700, 300, 500, 500)
 
-        self.label = QLabel(str(self.time), self)
+        self.label = QLabel(self)
         self.label.setGeometry(0, 0, 230, 100)
         self.label.setFont(QFont("Arial", 40))
         self.label.setStyleSheet("color: blue;" "background-color: red;")
@@ -29,9 +31,10 @@ class MainWindow(QMainWindow):
         self.timer.start(1000)  # Timer will tick every 1000 milliseconds (1 second)
 
     def timer_tick(self):
-        print(self.time)
+        timer_text = time.strftime("%H:%M:%S", time.gmtime(self.time))
+
         self.time -= 1
-        self.label.setText(str(self.time))
+        self.label.setText(timer_text)
 
 
 def main():
