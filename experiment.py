@@ -19,10 +19,10 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("Timey")
         self.setGeometry(700, 300, 500, 500)
 
-        label = QLabel(str(self.time), self)
-        label.setGeometry(0, 0, 230, 100)
-        label.setFont(QFont("Arial", 40))
-        label.setStyleSheet("color: blue;" "background-color: red;")
+        self.label = QLabel(str(self.time), self)
+        self.label.setGeometry(0, 0, 230, 100)
+        self.label.setFont(QFont("Arial", 40))
+        self.label.setStyleSheet("color: blue;" "background-color: red;")
 
         self.timer = QTimer()
         self.timer.timeout.connect(self.timer_tick)
@@ -31,6 +31,7 @@ class MainWindow(QMainWindow):
     def timer_tick(self):
         print(self.time)
         self.time -= 1
+        self.label.setText(str(self.time))
 
 
 def main():
