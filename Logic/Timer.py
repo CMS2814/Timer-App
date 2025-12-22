@@ -1,44 +1,31 @@
-# Timer.py
 from datetime import datetime
-from PyQt6.QtCore import QTimer
+
+## -------------------------## Stopwatch functions ## -------------------------##
 
 
-## -------------------------## Timer functions ## -------------------------##
-def start_timer():
-    current_time = datetime.now()
-    print(current_time)
+def start_stopwatch():
+    current_time = datetime.now().time()
+    formatted_time = current_time.strftime("%H:%M:%S:%f")[:-3]
+    print(formatted_time)
 
 
-def stop_timer():
+def stop_stopwatch():
+    stop = input("Type s to stop: ").lower()
+    return stop
+
+
+def reset_stopwatch():
     pass
 
 
-def reset_timer():
+def pause_stopwatch():
     pass
 
 
-def pause_timer():
+def resume_stopwatch():
     pass
 
 
-def resume_timer():
-    pass
-
-
-def get_time():
-    pass
-
-
-def timer_tick(time):
-    print(time)
-    time -= 1
-
-
-## ^^^^^^^^^^^^^^^^^^^^^^^^^## Timer functions ## ^^^^^^^^^^^^^^^^^^^^^^^^^##
-
+## ^^^^^^^^^^^^^^^^^^^^^^^^^## Stopwatch functions ## ^^^^^^^^^^^^^^^^^^^^^^^^^##
 if __name__ == "__main__":
-    time = 60
-
-    Timer = QTimer()
-    Timer.timeout.connect(timer_tick(time))
-    Timer.start(1000)  # Timer will tick every 1000 milliseconds (1 second)
+    pass
