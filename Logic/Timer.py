@@ -1,12 +1,14 @@
-from datetime import datetime
+# from datetime import datetime
+import time
+from threading import Timer
 
 ## -------------------------## Stopwatch functions ## -------------------------##
 
 
-def start_stopwatch():
-    current_time = datetime.now().time()
-    formatted_time = current_time.strftime("%H:%M:%S:%f")[:-3]
-    print(formatted_time)
+def start_stopwatch(text, _time=0):
+    _time += 1
+    text = time.strftime("%H:%M:%S", time.gmtime(_time))
+    return text, _time
 
 
 def stop_stopwatch():
@@ -28,4 +30,11 @@ def resume_stopwatch():
 
 ## ^^^^^^^^^^^^^^^^^^^^^^^^^## Stopwatch functions ## ^^^^^^^^^^^^^^^^^^^^^^^^^##
 if __name__ == "__main__":
-    pass
+    _time = 0
+    isGoing = True
+    stopWatch = ""
+    stopWatch, _time = start_stopwatch(stopWatch, _time)
+    while isGoing:
+        Timer(
+            3,
+        )
