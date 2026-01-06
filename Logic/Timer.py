@@ -14,8 +14,8 @@ class Stopwatch:
 
     def start(self):
         self.isGoing = True
-        self.update()
         self._time = 1
+        self.update()
 
     def stop(self):
         self.isGoing = False
@@ -24,7 +24,7 @@ class Stopwatch:
         self.isGoing = True
 
     def update(self):
-        while self._time >= 0:
+        while self._time > 0:
             if self.isGoing:
                 print(self.text)
                 time.sleep(1)
@@ -44,8 +44,9 @@ class Stopwatch:
                 print("Stopwatch resumed")
 
     def reset(self):
-        self._time = 0
-        self.text = time.strftime("%H:%M:%S", time.gmtime(self._time))
+        if not self.isGoing:
+            self._time = 0
+            self.text = time.strftime("%H:%M:%S", time.gmtime(self._time))
 
 
 stopwatch = Stopwatch()
