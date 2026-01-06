@@ -7,7 +7,7 @@ import keyboard
 
 class Stopwatch:
     def __init__(self):
-        self._time = 1
+        self._time = 0
         self.isGoing = True
         self.stopWatch = ""
         self.text = time.strftime("%H:%M:%S", time.gmtime(self._time))
@@ -15,6 +15,7 @@ class Stopwatch:
     def start(self):
         self.isGoing = True
         self.update()
+        self._time = 1
 
     def stop(self):
         self.isGoing = False
@@ -23,8 +24,8 @@ class Stopwatch:
         self.isGoing = True
 
     def update(self):
-        while self.isGoing:
-            if self._time > 0:
+        while self._time >= 0:
+            if self.isGoing:
                 print(self.text)
                 time.sleep(1)
                 self._time += 1
@@ -37,6 +38,10 @@ class Stopwatch:
             if keyboard.is_pressed("r"):
                 self.reset()
                 print("Stopwatch reset")
+
+            if keyboard.is_pressed("c"):
+                self.resume()
+                print("Stopwatch resumed")
 
     def reset(self):
         self._time = 0
