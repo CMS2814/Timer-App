@@ -16,7 +16,7 @@ import time
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.time = 60
+        self.time = 5
         self.goal = 60
         self.watch = 0
 
@@ -29,7 +29,7 @@ class MainWindow(QMainWindow):
         self.label.setStyleSheet("color: blue;" "background-color: red;")
 
         self.timer = QTimer()
-        self.timer.timeout.connect(self.stopwatch)
+        self.timer.timeout.connect(self.timer_tick)
         self.timer.start(1000)  # Timer will tick every 1000 milliseconds (1 second)
 
     def timer_tick(self):

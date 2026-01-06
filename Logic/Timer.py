@@ -1,40 +1,43 @@
 # from datetime import datetime
 import time
-from threading import Timer
+import keyboard
 
 ## -------------------------## Stopwatch functions ## -------------------------##
 
 
-def start_stopwatch(text, _time=0):
-    _time += 1
-    text = time.strftime("%H:%M:%S", time.gmtime(_time))
-    return text, _time
+class Stopwatch:
+    def __init__(self):
+        self._time = 0
+        self.isGoing = True
+        self.stopWatch = ""
+        self.text = time.strftime("%H:%M:%S", time.gmtime(self._time))
+
+    def start(self):
+        self.isGoing = True
+        self.update()
+
+    def stop(self):
+        self.isGoing = False
+
+    def update(self):
+        try:
+            while self.isGoing:
+                time.sleep(1)
+                self._time += 1
+                self.text = time.strftime("%H:%M:%S", time.gmtime(self._time))
+                print(self.text)
+        except KeyboardInterrupt:
+            self.stop()
 
 
-def stop_stopwatch():
-    stop = input("Type s to stop: ").lower()
-    return stop
+stopwatch = Stopwatch()
 
 
-def reset_stopwatch():
-    pass
-
-
-def pause_stopwatch():
-    pass
-
-
-def resume_stopwatch():
-    pass
+def printit():
+    print("print")
 
 
 ## ^^^^^^^^^^^^^^^^^^^^^^^^^## Stopwatch functions ## ^^^^^^^^^^^^^^^^^^^^^^^^^##
 if __name__ == "__main__":
-    _time = 0
-    isGoing = True
-    stopWatch = ""
-    stopWatch, _time = start_stopwatch(stopWatch, _time)
-    while isGoing:
-        Timer(
-            3,
-        )
+    stopwatch.start()
+    stopwatch.stop()
