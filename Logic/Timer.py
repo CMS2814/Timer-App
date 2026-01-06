@@ -20,14 +20,15 @@ class Stopwatch:
         self.isGoing = False
 
     def update(self):
-        try:
-            while self.isGoing:
-                time.sleep(1)
-                self._time += 1
-                self.text = time.strftime("%H:%M:%S", time.gmtime(self._time))
-                print(self.text)
-        except KeyboardInterrupt:
-            self.stop()
+        while self.isGoing:
+            time.sleep(1)
+            self._time += 1
+            self.text = time.strftime("%H:%M:%S", time.gmtime(self._time))
+            print(self.text)
+
+            if keyboard.is_pressed("s"):
+                self.stop()
+                print("Stopwatch stopped")
 
 
 stopwatch = Stopwatch()
