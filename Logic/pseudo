@@ -1,0 +1,3 @@
+!Pause logic:
+    >Keep track of the timer and keep it unless reset.
+    We can do while time >= 0: keep the timer?
