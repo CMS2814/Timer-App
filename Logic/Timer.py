@@ -24,38 +24,36 @@ class Stopwatch:
             print("Stopwatch started")
 
     def stop(self):
-        self.isGoing = False
-        print("Stopwatch stopped")
+        if self.isGoing:
+            self.isGoing = False
+            print("Stopwatch stopped")
+        time.sleep(0.1)
 
     def resume(self):
-        self.isGoing = True
-        print("Stopwatch resumed")
+        if not self.isGoing:
+            self.isGoing = True
+            print("Stopwatch resumed")
+            time.sleep(0.1)
 
     def update(self):
         curTime = datetime.now()
         while True:
             if self.isGoing:
                 _Time = datetime.now() - curTime
-                if _Time >= timedelta(seconds=self._time):
-                    self._time += 1
-                    timetext = timedelta(seconds=self._time)
+                if _Time >= timedelta(milliseconds=self._time):
+                    self._time += 10
+                    timetext = timedelta(milliseconds=self._time)
                     print(timetext)
 
-            if keyboard.is_pressed(
-                "p"
-            ):  # for some reason i have to hold s for it to work or spam it
+            if keyboard.is_pressed("space"):
                 self.stop()
-
-            if keyboard.is_pressed("r"):
+            elif keyboard.is_pressed("r"):
                 self.reset()
-
-            if keyboard.is_pressed("c"):
+            elif keyboard.is_pressed("space"):
                 self.resume()
-
-            if keyboard.is_pressed("s"):
+            elif keyboard.is_pressed("s"):
                 self.start()
-
-            if keyboard.is_pressed("q"):
+            elif keyboard.is_pressed("q"):
                 print("Quitting program")
                 break
 
@@ -65,6 +63,7 @@ class Stopwatch:
             self._time = 0
             self.text = time.strftime("%H:%M:%S", time.gmtime(self._time))
             print("Stopwatch reset")
+            time.sleep(0.1)
 
 
 stopwatch = Stopwatch()
