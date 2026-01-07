@@ -1,6 +1,8 @@
 # from datetime import datetime
 import time
+from datetime import datetime, timedelta
 import keyboard
+
 
 ## -------------------------## Stopwatch functions ## -------------------------##
 
@@ -67,4 +69,11 @@ stopwatch = Stopwatch()
 
 ## ^^^^^^^^^^^^^^^^^^^^^^^^^## Stopwatch functions ## ^^^^^^^^^^^^^^^^^^^^^^^^^##
 if __name__ == "__main__":
-    stopwatch.start()
+    i = 0
+    curTime = datetime.now()
+    while True:
+        _Time = datetime.now() - curTime
+        if _Time >= timedelta(seconds=i):
+            i += 1
+            timetext = timedelta(seconds=i)
+            print(timetext)
