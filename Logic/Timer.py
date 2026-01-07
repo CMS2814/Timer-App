@@ -32,12 +32,14 @@ class Stopwatch:
         print("Stopwatch resumed")
 
     def update(self):
+        curTime = datetime.now()
         while True:
             if self.isGoing:
-                print(self.text)
-                time.sleep(1)
-                self._time += 1
-                self.text = time.strftime("%H:%M:%S", time.gmtime(self._time))
+                _Time = datetime.now() - curTime
+                if _Time >= timedelta(seconds=self._time):
+                    self._time += 1
+                    timetext = timedelta(seconds=self._time)
+                    print(timetext)
 
             if keyboard.is_pressed(
                 "p"
@@ -69,11 +71,4 @@ stopwatch = Stopwatch()
 
 ## ^^^^^^^^^^^^^^^^^^^^^^^^^## Stopwatch functions ## ^^^^^^^^^^^^^^^^^^^^^^^^^##
 if __name__ == "__main__":
-    i = 0
-    curTime = datetime.now()
-    while True:
-        _Time = datetime.now() - curTime
-        if _Time >= timedelta(seconds=i):
-            i += 1
-            timetext = timedelta(seconds=i)
-            print(timetext)
+    stopwatch.start()
