@@ -5,6 +5,8 @@ from PyQt6.QtWidgets import (
     QMainWindow,
     QPushButton,
     QVBoxLayout,
+    QHBoxLayout,
+    QGridLayout,
     QWidget,
     QLabel,
 )
@@ -22,7 +24,7 @@ class MainWindow(QMainWindow):
         label = QLabel("Welcome", self)
         label.setGeometry(0, 0, 230, 100)
         label.setFont(QFont("Arial", 40))
-        label.setStyleSheet("color: blue;" "background-color: red;")
+        label.setStyleSheet("color: #e8e8e8;" "background-color: #241f1f;")
 
 
 def main():

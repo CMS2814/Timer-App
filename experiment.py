@@ -4,11 +4,13 @@ from PyQt6.QtWidgets import (
     QMainWindow,
     QPushButton,
     QVBoxLayout,
+    QHBoxLayout,
+    QGridLayout,
     QWidget,
     QLabel,
 )
 from PyQt6.QtGui import QFont
-from PyQt6.QtCore import QTimer
+from PyQt6.QtCore import QTimer, Qt
 from datetime import datetime
 import time
 
@@ -16,33 +18,24 @@ import time
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.time = 5
-        self.goal = 60
-        self.watch = 0
-
+        self.button = QPushButton("Click me!", self)
+        self.label = QLabel("Nothing", self)
         self.setWindowTitle("Timey")
         self.setGeometry(700, 300, 500, 500)
+        self.initUI()
 
-        self.label = QLabel(self)
-        self.label.setGeometry(0, 0, 230, 100)
-        self.label.setFont(QFont("Arial", 40))
-        self.label.setStyleSheet("color: blue;" "background-color: red;")
+    def initUI(self):
+        self.button.setGeometry(150, 100, 200, 100)
+        self.button.setStyleSheet("font-size: 30px;")
+        self.button.clicked.connect(self.onPress)
 
-        self.timer = QTimer()
-        self.timer.timeout.connect(self.timer_tick)
-        self.timer.start(1000)  # Timer will tick every 1000 milliseconds (1 second)
+        self.label.setGeometry(200, 225, 100, 50)
+        self.label.setStyleSheet("background-color: Red;" "font-size: 20px;")
+        self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-    def timer_tick(self):
-        timer_text = time.strftime("%H:%M:%S", time.gmtime(self.time))
-
-        self.time -= 1
-        self.label.setText(timer_text)
-
-    def stopwatch(self):
-        timer_text = time.strftime("%H:%M:%S", time.gmtime(self.watch))
-
-        self.watch += 1
-        self.label.setText(timer_text)
+    def onPress(self):
+        print("Button pressed!")
+        self.label.setText("Pressed!")
 
 
 def main():
