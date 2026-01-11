@@ -1,3 +1,4 @@
+# UI_Handler.py
 import sys
 from PyQt6.QtWidgets import (
     QApplication,
@@ -11,31 +12,33 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtGui import QFont
 from PyQt6.QtCore import QTimer, Qt
-from datetime import datetime
-import time
 
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.button = QPushButton("Click me!", self)
-        self.label = QLabel("Nothing", self)
+
         self.setWindowTitle("Timey")
-        self.setGeometry(700, 300, 500, 500)
+        self.setGeometry(700, 300, 500, 550)
+        # self.mainlabel = QLabel(self)
+        self.mainlayout = QVBoxLayout(self)
+        self.mainWidget = QWidget()
+        self.currentMode = QLabel("TIMER", self.mainWidget)
         self.initUI()
 
     def initUI(self):
-        self.button.setGeometry(150, 100, 200, 100)
-        self.button.setStyleSheet("font-size: 30px;")
-        self.button.clicked.connect(self.onPress)
+        self.setCentralWidget(self.mainWidget)
+        # self.mainlabel.setGeometry(0, 0, self.width(), self.height())
+        # self.mainlabel.setStyleSheet("background-color: red;" "font-size: 40px;")
+        # self.mainlabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        # self.mainlayout.addWidget(self.mainlabel)
+        self.mainlayout.addWidget(self.currentMode)
+        self.mainWidget.setStyleSheet("background-color: white;")
+        self.mainWidget.setLayout(self.mainlayout)
 
-        self.label.setGeometry(200, 225, 100, 50)
-        self.label.setStyleSheet("background-color: Red;" "font-size: 20px;")
-        self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-
-    def onPress(self):
-        print("Button pressed!")
-        self.label.setText("Pressed!")
+        # self.currentMode.setGeometry(0, 0, 1000, 50)
+        self.currentMode.setStyleSheet("background-color: blue;")
+        self.currentMode.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
 
 def main():

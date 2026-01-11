@@ -19,19 +19,26 @@ class MainWindow(QMainWindow):
         super().__init__()
 
         self.setWindowTitle("Timey")
-        self.setGeometry(700, 300, 500, 500)
-        self.mainlabel = QLabel(self)
-        self.mainlayout = QVBoxLayout()
+        self.setGeometry(700, 300, 500, 550)
+        # self.mainlabel = QLabel(self)
+        # self.mainlayout = QVBoxLayout()
         self.mainWidget = QWidget()
+        self.currentMode = QLabel("TIMER", self.mainWidget)
         self.initUI()
 
     def initUI(self):
         self.setCentralWidget(self.mainWidget)
         # self.mainlabel.setGeometry(0, 0, self.width(), self.height())
-        self.mainlabel.setStyleSheet("background-color: red;")
-        self.mainlabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.mainlayout.addWidget(self.mainlabel)
-        self.mainWidget.setLayout(self.mainlayout)
+        # self.mainlabel.setStyleSheet("background-color: red;" "font-size: 40px;")
+        # self.mainlabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        # self.mainlayout.addWidget(self.mainlabel)
+        # self.mainlayout.addWidget(self.currentMode)
+        self.mainWidget.setStyleSheet("background-color: white;")
+        # self.mainWidget.setLayout(self.mainlayout)
+
+        # self.currentMode.setGeometry(0, 0, 1000, 50)
+        self.currentMode.setStyleSheet("background-color: blue;")
+        self.currentMode.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
 
 def main():
