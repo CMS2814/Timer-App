@@ -11,7 +11,7 @@ from PyQt6.QtWidgets import (
     QLabel,
 )
 from PyQt6.QtGui import QFont
-from PyQt6.QtCore import QTimer
+from PyQt6.QtCore import QTimer, Qt
 
 
 class MainWindow(QMainWindow):
@@ -20,11 +20,18 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle("Timey")
         self.setGeometry(700, 300, 500, 500)
+        self.mainlabel = QLabel(self)
+        self.mainlayout = QVBoxLayout()
+        self.mainWidget = QWidget()
+        self.initUI()
 
-        label = QLabel("Welcome", self)
-        label.setGeometry(0, 0, 230, 100)
-        label.setFont(QFont("Arial", 40))
-        label.setStyleSheet("color: #e8e8e8;" "background-color: #241f1f;")
+    def initUI(self):
+        self.setCentralWidget(self.mainWidget)
+        # self.mainlabel.setGeometry(0, 0, self.width(), self.height())
+        self.mainlabel.setStyleSheet("background-color: red;")
+        self.mainlabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.mainlayout.addWidget(self.mainlabel)
+        self.mainWidget.setLayout(self.mainlayout)
 
 
 def main():
