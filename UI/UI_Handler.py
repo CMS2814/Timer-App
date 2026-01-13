@@ -28,11 +28,15 @@ class MainWindow(QMainWindow):
         self.bottomWidget = QWidget(self.mainWidget)
         # Labels
         self.currentMode = QLabel("TIMER", self.topWidget)
-        self.timeLabel = QLabel("00:00", self.midWidget)
+        self.timeLabel = QLineEdit("00:00", self.midWidget)
+
+        self.pickTime1 = QPushButton("10m", self.midWidget)
+        self.pickTime2 = QPushButton("15m", self.midWidget)
+        self.pickTime3 = QPushButton("30m", self.midWidget)
         # Layouts
         self.mainlayout = QVBoxLayout(self.mainWidget)
         self.topLayout = QVBoxLayout(self.topWidget)
-        self.midLayout = QVBoxLayout(self.midWidget)
+        self.midLayout = QHBoxLayout(self.midWidget)
         self.bottomLayout = QHBoxLayout(self.bottomWidget)
 
         self.initUI()
@@ -45,7 +49,9 @@ class MainWindow(QMainWindow):
         self.currentMode.setFixedHeight(50)
         self.currentMode.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.currentMode.setStyleSheet(
-            "background-color: lightgray; padding: 5px; border-radius: 5px;"
+            "background-color: lightgray; "
+            "padding: 5px;"
+            "border-radius: 5px;"
             "font-size: 20px;"
         )
         self.currentMode.setFont(QFont("Arial"))
@@ -63,6 +69,28 @@ class MainWindow(QMainWindow):
         )
         self.timeLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.timeLabel.setFixedSize(350, 100)
+        # Pick Time Labels
+        timeLabelStyle = (
+            "background-color: yellow;"
+            "color: black;"
+            "font-size: 20px;"
+            "border-radius: 35px;"
+        )
+        # Time Pick 1
+        self.pickTime1.setStyleSheet(timeLabelStyle)
+        # self.pickTime1.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.pickTime1.setFixedSize(70, 70)
+        self.pickTime1.clicked.connect(self.onButtonClick)
+        # Time Pick 2
+        self.pickTime2.setStyleSheet(timeLabelStyle)
+        # self.pickTime2.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.pickTime2.setFixedSize(70, 70)
+        self.pickTime2.clicked.connect(self.onButtonClick)
+        # Time Pick 3
+        self.pickTime3.setStyleSheet(timeLabelStyle)
+        # self.pickTime3.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.pickTime3.setFixedSize(70, 70)
+        self.pickTime3.clicked.connect(self.onButtonClick)
         # self.mainlayout.addWidget(self.currentMode)
         # Layout properties
         # Main Layout
@@ -79,8 +107,13 @@ class MainWindow(QMainWindow):
             alignment=Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignBottom,
         )
         # Mid Layout
-
+        self.midLayout.addWidget(self.pickTime1)
+        self.midLayout.addWidget(self.pickTime2)
+        self.midLayout.addWidget(self.pickTime3)
         # Bottom Layout
+
+    def onButtonClick(self):
+        print("Button clicked!")
 
 
 def main():

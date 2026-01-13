@@ -26,35 +26,44 @@ class MainWindow(QMainWindow):
         self.topWidget = QWidget(self.mainWidget)
         self.midWidget = QWidget(self.mainWidget)
         self.bottomWidget = QWidget(self.mainWidget)
-        # Labels
+        # Labels/LineEdits/Buttons
         self.currentMode = QLabel("TIMER", self.topWidget)
-        self.timeLabel = QLabel("00:00", self.midWidget)
+
+        self.timeLabel = QLineEdit("00:00", self.midWidget)
+
+        self.pickTime1 = QPushButton("10m", self.midWidget)
+        self.pickTime2 = QPushButton("15m", self.midWidget)
+        self.pickTime3 = QPushButton("30m", self.midWidget)
+
+        self.startButton = QPushButton("Start", self.bottomWidget)
         # Layouts
         self.mainlayout = QVBoxLayout(self.mainWidget)
         self.topLayout = QVBoxLayout(self.topWidget)
-        self.midLayout = QVBoxLayout(self.midWidget)
+        self.midLayout = QHBoxLayout(self.midWidget)
         self.bottomLayout = QHBoxLayout(self.bottomWidget)
 
         self.initUI()
 
     def initUI(self):
         self.setCentralWidget(self.mainWidget)
-        # Styles
-        # Current Mode Label
+        # --------------------------------Styles----------------------------------------
+        # Current Mode Label-------------------
         self.currentMode.setFixedWidth(100)
         self.currentMode.setFixedHeight(50)
         self.currentMode.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.currentMode.setStyleSheet(
-            "background-color: lightgray; padding: 5px; border-radius: 5px;"
+            "background-color: lightgray; "
+            "padding: 5px;"
+            "border-radius: 5px;"
             "font-size: 20px;"
         )
         self.currentMode.setFont(QFont("Arial"))
-        # Widget Labels
+        # Widget Labels--------------------
         self.mainWidget.setStyleSheet("background-color: white;")
         self.topWidget.setStyleSheet("background-color: red;")
         self.midWidget.setStyleSheet("background-color: green;")
         self.bottomWidget.setStyleSheet("background-color: blue;")
-        # Time Label
+        # Time Label------------------------
         self.timeLabel.setStyleSheet(
             "background-color: gray;"
             "color: black;"
@@ -63,8 +72,37 @@ class MainWindow(QMainWindow):
         )
         self.timeLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.timeLabel.setFixedSize(350, 100)
+        # Pick Time Labels-----------------
+        timeLabelStyle = (
+            "background-color: yellow;"
+            "color: black;"
+            "font-size: 20px;"
+            "border-radius: 35px;"
+        )
+        # Time Pick 1
+        self.pickTime1.setStyleSheet(timeLabelStyle)
+        # self.pickTime1.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.pickTime1.setFixedSize(70, 70)
+        self.pickTime1.clicked.connect(self.onButtonClick)
+        # Time Pick 2
+        self.pickTime2.setStyleSheet(timeLabelStyle)
+        # self.pickTime2.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.pickTime2.setFixedSize(70, 70)
+        self.pickTime2.clicked.connect(self.onButtonClick)
+        # Time Pick 3
+        self.pickTime3.setStyleSheet(timeLabelStyle)
+        # self.pickTime3.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.pickTime3.setFixedSize(70, 70)
+        self.pickTime3.clicked.connect(self.onButtonClick)
         # self.mainlayout.addWidget(self.currentMode)
-        # Layout properties
+
+        # Start Button-----------------------
+        self.startButton.setStyleSheet(
+            "background-color: green; color: white;" "font-size: 25px;"
+        )
+        self.startButton.setFixedSize(150, 75)
+        # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^Styles^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # --------------------------Layout Properties----------------------------------------------
         # Main Layout
         self.mainlayout.addWidget(self.topWidget)
         self.mainlayout.addWidget(self.midWidget)
@@ -79,8 +117,15 @@ class MainWindow(QMainWindow):
             alignment=Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignBottom,
         )
         # Mid Layout
-
+        self.midLayout.addWidget(self.pickTime1)
+        self.midLayout.addWidget(self.pickTime2)
+        self.midLayout.addWidget(self.pickTime3)
         # Bottom Layout
+        self.bottomLayout.addWidget(self.startButton)
+
+    # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^Layout Properties^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    def onButtonClick(self):
+        print("Button clicked!")
 
 
 def main():
