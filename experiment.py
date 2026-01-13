@@ -42,15 +42,24 @@ class MainWindow(QMainWindow):
         self.midLayout = QHBoxLayout(self.midWidget)
         self.bottomLayout = QHBoxLayout(self.bottomWidget)
 
-        self.initUI()
-
-    def initUI(self):
         self.setCentralWidget(self.mainWidget)
-        # --------------------------------Styles----------------------------------------
-        # Current Mode Label-------------------
-        self.currentMode.setFixedWidth(100)
-        self.currentMode.setFixedHeight(50)
+
+        self.loadLayouts()
+        self.loadStyles()
+
+    def loadStyles(self):
+        # -------Sizes-----------------------
+        self.currentMode.setFixedSize(100, 50)
+        self.timeLabel.setFixedSize(350, 100)
+        self.pickTime1.setFixedSize(70, 70)
+        self.pickTime2.setFixedSize(70, 70)
+        self.pickTime3.setFixedSize(70, 70)
+        # -------Alignments------------------
         self.currentMode.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.timeLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        # -------Styles----------------------
+        # Current Mode Label--------
         self.currentMode.setStyleSheet(
             "background-color: lightgray; "
             "padding: 5px;"
@@ -58,21 +67,21 @@ class MainWindow(QMainWindow):
             "font-size: 20px;"
         )
         self.currentMode.setFont(QFont("Arial"))
-        # Widget Labels--------------------
+
+        # Widget Labels---------
         self.mainWidget.setStyleSheet("background-color: white;")
         self.topWidget.setStyleSheet("background-color: red;")
         self.midWidget.setStyleSheet("background-color: green;")
         self.bottomWidget.setStyleSheet("background-color: blue;")
-        # Time Label------------------------
+
+        # Time Label------------
         self.timeLabel.setStyleSheet(
             "background-color: gray;"
             "color: black;"
             "font-size: 65px;"
             "padding: 10px;"
         )
-        self.timeLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.timeLabel.setFixedSize(350, 100)
-        # Pick Time Labels-----------------
+        # Pick Time Labels-------
         timeLabelStyle = (
             "background-color: yellow;"
             "color: black;"
@@ -82,17 +91,17 @@ class MainWindow(QMainWindow):
         # Time Pick 1
         self.pickTime1.setStyleSheet(timeLabelStyle)
         # self.pickTime1.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.pickTime1.setFixedSize(70, 70)
+
         self.pickTime1.clicked.connect(self.onButtonClick)
         # Time Pick 2
         self.pickTime2.setStyleSheet(timeLabelStyle)
         # self.pickTime2.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.pickTime2.setFixedSize(70, 70)
+
         self.pickTime2.clicked.connect(self.onButtonClick)
         # Time Pick 3
         self.pickTime3.setStyleSheet(timeLabelStyle)
         # self.pickTime3.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.pickTime3.setFixedSize(70, 70)
+
         self.pickTime3.clicked.connect(self.onButtonClick)
         # self.mainlayout.addWidget(self.currentMode)
 
@@ -101,8 +110,8 @@ class MainWindow(QMainWindow):
             "background-color: green; color: white;" "font-size: 25px;"
         )
         self.startButton.setFixedSize(150, 75)
-        # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^Styles^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-        # --------------------------Layout Properties----------------------------------------------
+
+    def loadLayouts(self):
         # Main Layout
         self.mainlayout.addWidget(self.topWidget)
         self.mainlayout.addWidget(self.midWidget)
@@ -123,7 +132,6 @@ class MainWindow(QMainWindow):
         # Bottom Layout
         self.bottomLayout.addWidget(self.startButton)
 
-    # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^Layout Properties^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
     def onButtonClick(self):
         print("Button clicked!")
 
