@@ -27,15 +27,17 @@ class MainWindow(QMainWindow):
         self.midWidget = QWidget(self.mainWidget)
         self.bottomWidget = QWidget(self.mainWidget)
         # Labels/LineEdits/Buttons
-        self.currentMode = QLabel("TIMER", self.topWidget)
-
-        self.timeLabel = QLineEdit("00:00", self.midWidget)
-
+        # Top Widget
+        self.currentModeTitle = QLabel("TIMER", self.topWidget)
+        self.modeButton = QPushButton("Timer", self.topWidget)
+        self.timeLabel = QLineEdit("00:00", self.topWidget)
+        # Mid Widget
         self.pickTime1 = QPushButton("10m", self.midWidget)
         self.pickTime2 = QPushButton("15m", self.midWidget)
         self.pickTime3 = QPushButton("30m", self.midWidget)
-
+        # Bottom Widget
         self.startButton = QPushButton("Start", self.bottomWidget)
+
         # Layouts
         self.mainlayout = QVBoxLayout(self.mainWidget)
         self.topLayout = QVBoxLayout(self.topWidget)
@@ -46,70 +48,66 @@ class MainWindow(QMainWindow):
 
         self.loadLayouts()
         self.loadStyles()
+        self.checkButtonConnections()
 
     def loadStyles(self):
         # -------Sizes-----------------------
-        self.currentMode.setFixedSize(100, 50)
+        # Top Widget
+        self.currentModeTitle.setFixedSize(100, 50)
         self.timeLabel.setFixedSize(350, 100)
+        self.modeButton.setFixedSize(75, 50)
+        # Mid Widget
         self.pickTime1.setFixedSize(70, 70)
         self.pickTime2.setFixedSize(70, 70)
         self.pickTime3.setFixedSize(70, 70)
+        # Bottom Widget
+        self.startButton.setFixedSize(150, 75)
         # -------Alignments------------------
-        self.currentMode.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        # Top Widget
+        self.currentModeTitle.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.timeLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        # Mid Widget
+        # Bottom Top Widget
 
         # -------Styles----------------------
-        # Current Mode Label--------
-        self.currentMode.setStyleSheet(
+        self.mainWidget.setStyleSheet("background-color: white;")
+        # Top Widget
+        self.topWidget.setStyleSheet("background-color: red;")
+
+        self.currentModeTitle.setStyleSheet(
             "background-color: lightgray; "
             "padding: 5px;"
             "border-radius: 5px;"
             "font-size: 20px;"
         )
-        self.currentMode.setFont(QFont("Arial"))
-
-        # Widget Labels---------
-        self.mainWidget.setStyleSheet("background-color: white;")
-        self.topWidget.setStyleSheet("background-color: red;")
-        self.midWidget.setStyleSheet("background-color: green;")
-        self.bottomWidget.setStyleSheet("background-color: blue;")
-
-        # Time Label------------
         self.timeLabel.setStyleSheet(
             "background-color: gray;"
             "color: black;"
             "font-size: 65px;"
             "padding: 10px;"
         )
+
+        self.modeButton.setStyleSheet("background-color: blue; font-size: 20px;")
+        self.currentModeTitle.setFont(QFont("Arial"))
+        # Mid Widget
+        self.midWidget.setStyleSheet("background-color: green;")
+
         # Pick Time Labels-------
-        timeLabelStyle = (
+        pickTimeLabelStyle = (
             "background-color: yellow;"
             "color: black;"
             "font-size: 20px;"
             "border-radius: 35px;"
         )
-        # Time Pick 1
-        self.pickTime1.setStyleSheet(timeLabelStyle)
-        # self.pickTime1.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.pickTime1.setStyleSheet(pickTimeLabelStyle)
+        self.pickTime2.setStyleSheet(pickTimeLabelStyle)
+        self.pickTime3.setStyleSheet(pickTimeLabelStyle)
+        # Bottom Widget
+        self.bottomWidget.setStyleSheet("background-color: blue;")
 
-        self.pickTime1.clicked.connect(self.onButtonClick)
-        # Time Pick 2
-        self.pickTime2.setStyleSheet(timeLabelStyle)
-        # self.pickTime2.setAlignment(Qt.AlignmentFlag.AlignCenter)
-
-        self.pickTime2.clicked.connect(self.onButtonClick)
-        # Time Pick 3
-        self.pickTime3.setStyleSheet(timeLabelStyle)
-        # self.pickTime3.setAlignment(Qt.AlignmentFlag.AlignCenter)
-
-        self.pickTime3.clicked.connect(self.onButtonClick)
-        # self.mainlayout.addWidget(self.currentMode)
-
-        # Start Button-----------------------
         self.startButton.setStyleSheet(
             "background-color: green; color: white;" "font-size: 25px;"
         )
-        self.startButton.setFixedSize(150, 75)
 
     def loadLayouts(self):
         # Main Layout
@@ -118,19 +116,30 @@ class MainWindow(QMainWindow):
         self.mainlayout.addWidget(self.bottomWidget)
         # Top Layout
         self.topLayout.addWidget(
-            self.currentMode,
+            self.modeButton,
+            alignment=Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop,
+        )
+        self.topLayout.addWidget(
+            self.currentModeTitle,
             alignment=Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop,
         )
         self.topLayout.addWidget(
             self.timeLabel,
             alignment=Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignBottom,
         )
+
         # Mid Layout
         self.midLayout.addWidget(self.pickTime1)
         self.midLayout.addWidget(self.pickTime2)
         self.midLayout.addWidget(self.pickTime3)
         # Bottom Layout
         self.bottomLayout.addWidget(self.startButton)
+
+    def checkButtonConnections(self):
+        self.pickTime1.clicked.connect(self.onButtonClick)
+        self.pickTime2.clicked.connect(self.onButtonClick)
+        self.pickTime3.clicked.connect(self.onButtonClick)
+        self.startButton.clicked.connect(self.onButtonClick)
 
     def onButtonClick(self):
         print("Button clicked!")
