@@ -21,30 +21,40 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle("Timey")
         self.setGeometry(700, 300, 500, 550)
-        # self.mainlabel = QLabel(self)
+
+        # Main Properties
         self.mainWidget = QWidget(self)
+
+        self.mainlayout = QVBoxLayout(self.mainWidget)
+
+        # Top Section Properties
+        # /---Widgets
         self.topWidget = QWidget(self.mainWidget)
         self.topBarWidget = QWidget(self.topWidget)
-        self.midWidget = QWidget(self.mainWidget)
-        self.bottomWidget = QWidget(self.mainWidget)
-        # Labels/LineEdits/Buttons
-        # Top Widget
+        # /---Buttons/Labels/Etc.
         self.currentModeTitle = QLabel("TIMER", self.topWidget)
         self.modeButton = QPushButton("Timer", self.topWidget)
         self.timeLabel = QLineEdit("00:00", self.topWidget)
+        # /---Layouts
+        self.topLayout = QVBoxLayout(self.topWidget)
+        self.upperTopLayout = QHBoxLayout(self.topBarWidget)
 
-        # Mid Widget
+        # Mid Section Properties
+        # /---Widgets
+        self.midWidget = QWidget(self.mainWidget)
+        # /---Buttons/Labels/Etc.
         self.pickTime1 = QPushButton("10m", self.midWidget)
         self.pickTime2 = QPushButton("15m", self.midWidget)
         self.pickTime3 = QPushButton("30m", self.midWidget)
-        # Bottom Widget
-        self.startButton = QPushButton("Start", self.bottomWidget)
-
-        # Layouts
-        self.mainlayout = QVBoxLayout(self.mainWidget)
-        self.topLayout = QVBoxLayout(self.topWidget)
-        self.upperTopLayout = QHBoxLayout(self.topWidget)
+        # /---Layouts
         self.midLayout = QHBoxLayout(self.midWidget)
+
+        # Bottom Section Properties
+        # /---Widgets
+        self.bottomWidget = QWidget(self.mainWidget)
+        # /---Buttons/Labels/Etc.
+        self.startButton = QPushButton("Start", self.bottomWidget)
+        # /---Layouts
         self.bottomLayout = QHBoxLayout(self.bottomWidget)
 
         self.setCentralWidget(self.mainWidget)
@@ -118,25 +128,18 @@ class MainWindow(QMainWindow):
         self.mainlayout.addWidget(self.midWidget)
         self.mainlayout.addWidget(self.bottomWidget)
         # Top Layout
-        self.topLayout.addWidget(
-            self.modeButton,
-            alignment=Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop,
-        )
-        self.topLayout.addWidget(
-            self.currentModeTitle,
-            alignment=Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop,
-        )
+        self.topLayout.addWidget(self.topBarWidget)
+
         self.topLayout.addWidget(
             self.timeLabel,
             alignment=Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignBottom,
         )
-        self.topLayout.addWidget(self.topBarWidget)
+
+        self.upperTopLayout.addWidget(self.modeButton)
         self.upperTopLayout.addWidget(
-            self.modeButton, alignment=Qt.AlignmentFlag.AlignLeft
+            self.currentModeTitle, alignment=Qt.AlignmentFlag.AlignLeft
         )
-        self.upperTopLayout.addWidget(
-            self.currentModeTitle, alignment=Qt.AlignmentFlag.AlignHCenter
-        )
+        self.upperTopLayout.setSpacing(95)  # default 95
 
         # Mid Layout
         self.midLayout.addWidget(self.pickTime1)
