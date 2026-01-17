@@ -24,6 +24,7 @@ class MainWindow(QMainWindow):
         # self.mainlabel = QLabel(self)
         self.mainWidget = QWidget(self)
         self.topWidget = QWidget(self.mainWidget)
+        self.topBarWidget = QWidget(self.topWidget)
         self.midWidget = QWidget(self.mainWidget)
         self.bottomWidget = QWidget(self.mainWidget)
         # Labels/LineEdits/Buttons
@@ -31,6 +32,7 @@ class MainWindow(QMainWindow):
         self.currentModeTitle = QLabel("TIMER", self.topWidget)
         self.modeButton = QPushButton("Timer", self.topWidget)
         self.timeLabel = QLineEdit("00:00", self.topWidget)
+
         # Mid Widget
         self.pickTime1 = QPushButton("10m", self.midWidget)
         self.pickTime2 = QPushButton("15m", self.midWidget)
@@ -41,6 +43,7 @@ class MainWindow(QMainWindow):
         # Layouts
         self.mainlayout = QVBoxLayout(self.mainWidget)
         self.topLayout = QVBoxLayout(self.topWidget)
+        self.upperTopLayout = QHBoxLayout(self.topWidget)
         self.midLayout = QHBoxLayout(self.midWidget)
         self.bottomLayout = QHBoxLayout(self.bottomWidget)
 
@@ -126,6 +129,13 @@ class MainWindow(QMainWindow):
         self.topLayout.addWidget(
             self.timeLabel,
             alignment=Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignBottom,
+        )
+        self.topLayout.addWidget(self.topBarWidget)
+        self.upperTopLayout.addWidget(
+            self.modeButton, alignment=Qt.AlignmentFlag.AlignLeft
+        )
+        self.upperTopLayout.addWidget(
+            self.currentModeTitle, alignment=Qt.AlignmentFlag.AlignHCenter
         )
 
         # Mid Layout
