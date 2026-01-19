@@ -66,10 +66,32 @@ class Stopwatch:
 
 ## -------------------------## Timer functions ## -------------------------##\
 class Timer:
-    def __init__(self):
-        self.time = 0
+    def __init__(self, timeDuration=None):
+        self.duration = timeDuration or 0
+        self.startTime = None
+
+    def start(self):
+        self.startTime = time.monotonic()
+
+    def pause(self):
+        pass
+
+    def resume(self):
+        pass
+
+    def reset(self):
+        pass
+
+    def updateTime(self):
+        if not self.startTime:
+            return
+        currentTime = time.monotonic()
+        elapsedTime = currentTime - self.startTime
+        remainingTime = self.duration - elapsedTime
+        return remainingTime
 
 
 ## ^^^^^^^^^^^^^^^^^^^^^^^^^## Timer functions ## ^^^^^^^^^^^^^^^^^^^^^^^^^##
 if __name__ == "__main__":
-    pass
+    timer = time.monotonic()
+    print(timer)

@@ -13,6 +13,7 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtGui import QFont, QFontDatabase
 from PyQt6.QtCore import QTimer, Qt
+from Logic import Timer as coreTimerLogic
 
 
 class MainWindow(QMainWindow):
@@ -21,6 +22,8 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle("Timey")
         self.setGeometry(700, 300, 500, 550)
+        self.timerLogic = coreTimerLogic.Timer()
+        self.currentMode = "Timer"
 
         # Main Properties
         self.mainWidget = QWidget(self)
@@ -54,6 +57,7 @@ class MainWindow(QMainWindow):
         self.bottomWidget = QWidget(self.mainWidget)
         # /---Buttons/Labels/Etc.
         self.startButton = QPushButton("Start", self.bottomWidget)
+
         # /---Layouts
         self.bottomLayout = QHBoxLayout(self.bottomWidget)
 
@@ -149,10 +153,16 @@ class MainWindow(QMainWindow):
         self.bottomLayout.addWidget(self.startButton)
 
     def checkButtonConnections(self):
+        self.modeButton.clicked.connect(self.onButtonClick)
         self.pickTime1.clicked.connect(self.onButtonClick)
         self.pickTime2.clicked.connect(self.onButtonClick)
         self.pickTime3.clicked.connect(self.onButtonClick)
-        self.startButton.clicked.connect(self.onButtonClick)
+        self.startButton.clicked.connect(self.onStartButtonClicked)
+
+    def onStartButtonClicked(self):
+        self.timeLabel.setText("00:00")
+        self.timerLogic.start()
+        print("Start Button Clicked!")
 
     def onButtonClick(self):
         print("Button clicked!")
