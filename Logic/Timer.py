@@ -66,8 +66,8 @@ class Stopwatch:
 
 ## -------------------------## Timer functions ## -------------------------##\
 class Timer:
-    def __init__(self, timeDuration=None):
-        self.duration = timeDuration or 0
+    def __init__(self, timeDuration: int = None):
+        self.duration = timeDuration
         self.startTime = None
 
     def start(self):
@@ -87,7 +87,7 @@ class Timer:
             return
         currentTime = time.monotonic()
         elapsedTime = currentTime - self.startTime
-        remainingTime = self.duration - elapsedTime
+        remainingTime = max(0, self.duration - elapsedTime)
         return remainingTime
 
 

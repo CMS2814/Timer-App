@@ -22,7 +22,7 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle("Timey")
         self.setGeometry(700, 300, 500, 550)
-        self.timerLogic = coreTimerLogic.Timer()
+        self.timerLogic = coreTimerLogic.Timer(10)
         self.currentMode = "Timer"
 
         # Main Properties
@@ -160,9 +160,19 @@ class MainWindow(QMainWindow):
         self.startButton.clicked.connect(self.onStartButtonClicked)
 
     def onStartButtonClicked(self):
-        self.timeLabel.setText("00:00")
+        self.timeLabel.setText(str(self.timerLogic.duration))
         self.timerLogic.start()
+        self.ticker()
         print("Start Button Clicked!")
+
+    def ticker(self):
+        self.qTimer = QTimer()
+        self.qTimer.timeout.connect(self.updateUI)
+        self.qTimer.start(10)
+
+    def updateUI(self):
+        remainingTime = self.timerLogic.updateTime()
+        self.timeLabel.setText(str(round(remainingTime, 2)))
 
     def onButtonClick(self):
         print("Button clicked!")
