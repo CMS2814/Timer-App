@@ -5,7 +5,7 @@ import keyboard
 
 
 ## -------------------------## Stopwatch functions ## -------------------------##
-class Stopwatch:
+class Stopwatch:  # To be remade
     def __init__(self):
         self.time = 0
         self.isGoing = True
@@ -68,27 +68,42 @@ class Stopwatch:
 class Timer:
     def __init__(self, timeDuration: int = None):
         self.duration = timeDuration
+        self.isPaused = True
+        self.isReset = True
         self.startTime = None
 
     def start(self):
+        self.isPaused = False
+        self.isReset = False
         self.startTime = time.monotonic()
+        print("Timer started")
 
     def pause(self):
-        pass
+        if not self.isPaused:
+            self.isPaused = True
+            print("Timer paused")
 
     def resume(self):
-        pass
+        if self.isPaused:
+            self.isPaused = False
+            print("Timer resumed")
 
     def reset(self):
-        pass
+        if not self.isReset:
+            self.isReset = True
+            self.startTime = None
+            self.isPaused = True
+            print("Timer reset")
 
     def updateTime(self):
         if not self.startTime:
             return
-        currentTime = time.monotonic()
-        elapsedTime = currentTime - self.startTime
-        remainingTime = max(0, self.duration - elapsedTime)
-        return remainingTime
+        if not self.isPaused:
+            currentTime = time.monotonic()
+            elapsedTime = currentTime - self.startTime
+            remainingTime = max(0, self.duration - elapsedTime)
+            print("Remaining time:", remainingTime)
+            return remainingTime
 
 
 ## ^^^^^^^^^^^^^^^^^^^^^^^^^## Timer functions ## ^^^^^^^^^^^^^^^^^^^^^^^^^##
