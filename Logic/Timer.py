@@ -67,14 +67,20 @@ class Stopwatch:  # To be remade
 ## -------------------------## Timer functions ## -------------------------##\
 class Timer:
     def __init__(self, timeDuration: int = None):
-        self.duration = timeDuration
         self.isPaused = True
-        self.isReset = True
+        self.isStarted = False
         self.startTime = None
+        if timeDuration:
+            try:
+                self.duration = int(timeDuration)
+            except ValueError:
+                self.duration = None
 
     def start(self):
+        if not self.duration:
+            return
         self.isPaused = False
-        self.isReset = False
+        self.isStarted = True
         self.startTime = time.monotonic()
         print("Timer started")
 
@@ -89,21 +95,21 @@ class Timer:
             print("Timer resumed")
 
     def reset(self):
-        if not self.isReset:
-            self.isReset = True
+        if self.isStarted:
+            self.isStarted = False
             self.startTime = None
             self.isPaused = True
             print("Timer reset")
 
     def updateTime(self):
-        if not self.startTime:
+        if not self.startTime or self.duration is None:
             return
         if not self.isPaused:
             currentTime = time.monotonic()
             elapsedTime = currentTime - self.startTime
             remainingTime = max(0, self.duration - elapsedTime)
             print("Remaining time:", remainingTime)
-            return remainingTime
+            return str(round(remainingTime, 2))
 
 
 ## ^^^^^^^^^^^^^^^^^^^^^^^^^## Timer functions ## ^^^^^^^^^^^^^^^^^^^^^^^^^##
