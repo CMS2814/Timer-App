@@ -190,7 +190,6 @@ class MainWindow(QMainWindow):
 
     def onPickTimeClicked(self, button):
         if button.text() == "10m":
-            setTime = 10 * 60
             self.timeLabel.setText(str(10 * 60))
         elif button.text() == "15m":
             self.timeLabel.setText(str(15 * 60))
