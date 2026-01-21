@@ -1,16 +1,6 @@
 # UI_Handler.py
 import sys
-from PyQt6.QtWidgets import (
-    QApplication,
-    QMainWindow,
-    QPushButton,
-    QVBoxLayout,
-    QHBoxLayout,
-    QGridLayout,
-    QWidget,
-    QLabel,
-    QLineEdit,
-)
+from PyQt6.QtWidgets import *
 from PyQt6.QtGui import QFont, QFontDatabase
 from PyQt6.QtCore import QTimer, Qt
 from Logic import Timer as coreTimerLogic
@@ -50,6 +40,13 @@ class MainWindow(QMainWindow):
         self.pickTime1 = QPushButton("10m", self.midWidget)
         self.pickTime2 = QPushButton("15m", self.midWidget)
         self.pickTime3 = QPushButton("30m", self.midWidget)
+
+        self.pickTimeGroup = QButtonGroup()
+        self.pickTimeGroup.setExclusive(True)
+
+        self.pickTimeGroup.addButton(self.pickTime1)
+        self.pickTimeGroup.addButton(self.pickTime2)
+        self.pickTimeGroup.addButton(self.pickTime3)
         # /---Layouts
         self.midLayout = QHBoxLayout(self.midWidget)
 
@@ -163,9 +160,7 @@ class MainWindow(QMainWindow):
 
     def checkButtonConnections(self):
         self.modeButton.clicked.connect(self.onButtonClick)
-        self.pickTime1.clicked.connect(self.onButtonClick)
-        self.pickTime2.clicked.connect(self.onButtonClick)
-        self.pickTime3.clicked.connect(self.onButtonClick)
+        self.pickTimeGroup.buttonClicked.connect(self.onPickTimeClicked)
         self.primaryButton.clicked.connect(self.onPrimaryButtonClicked)
         self.secondaryButton.clicked.connect(self.onSecondaryButtonClicked)
 
@@ -192,6 +187,15 @@ class MainWindow(QMainWindow):
             self.primaryButton.setText("Start")
             self.secondaryButton.setHidden(True)
             self.timeLabel.setText("0")
+
+    def onPickTimeClicked(self, button):
+        if button.text() == "10m":
+            setTime = 10 * 60
+            self.timeLabel.setText(str(10 * 60))
+        elif button.text() == "15m":
+            self.timeLabel.setText(str(15 * 60))
+        elif button.text() == "30m":
+            self.timeLabel.setText(str(30 * 60))
 
     def ticker(self):
         self.qTimer = QTimer()

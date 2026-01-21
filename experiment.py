@@ -1,18 +1,9 @@
 # UI_Handler.py
 import sys
-from PyQt6.QtWidgets import (
-    QApplication,
-    QMainWindow,
-    QPushButton,
-    QVBoxLayout,
-    QHBoxLayout,
-    QGridLayout,
-    QWidget,
-    QLabel,
-    QLineEdit,
-)
+from PyQt6.QtWidgets import *
 from PyQt6.QtGui import QFont, QFontDatabase
 from PyQt6.QtCore import QTimer, Qt
+from Logic import Timer as coreTimerLogic
 
 
 class MainWindow(QMainWindow):
@@ -21,6 +12,9 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle("Timey")
         self.setGeometry(700, 300, 500, 550)
+        self.timerLogic = coreTimerLogic.Timer()  # Always set to zero
+        self.timerLogic.isPaused = True
+        self.currentMode = "Timer"
 
         # Main Properties
         self.mainWidget = QWidget(self)
@@ -34,7 +28,7 @@ class MainWindow(QMainWindow):
         # /---Buttons/Labels/Etc.
         self.currentModeTitle = QLabel("TIMER", self.topWidget)
         self.modeButton = QPushButton("Timer", self.topWidget)
-        self.timeLabel = QLineEdit("00:00", self.topWidget)
+        self.timeLabel = QLineEdit("0", self.topWidget)
         # /---Layouts
         self.topLayout = QVBoxLayout(self.topWidget)
         self.upperTopLayout = QHBoxLayout(self.topBarWidget)
@@ -53,7 +47,9 @@ class MainWindow(QMainWindow):
         # /---Widgets
         self.bottomWidget = QWidget(self.mainWidget)
         # /---Buttons/Labels/Etc.
-        self.startButton = QPushButton("Start", self.bottomWidget)
+        self.primaryButton = QPushButton("Start", self.bottomWidget)
+        self.secondaryButton = QPushButton("Reset", self.bottomWidget)
+
         # /---Layouts
         self.bottomLayout = QHBoxLayout(self.bottomWidget)
 
@@ -64,6 +60,8 @@ class MainWindow(QMainWindow):
         self.checkButtonConnections()
 
     def loadStyles(self):
+        # -------States---------------------
+        self.secondaryButton.setHidden(True)
         # -------Sizes-----------------------
         # Top Widget
         self.currentModeTitle.setFixedSize(100, 50)
@@ -74,7 +72,8 @@ class MainWindow(QMainWindow):
         self.pickTime2.setFixedSize(70, 70)
         self.pickTime3.setFixedSize(70, 70)
         # Bottom Widget
-        self.startButton.setFixedSize(150, 75)
+        self.primaryButton.setFixedSize(150, 75)
+        self.secondaryButton.setFixedSize(150, 75)
         # -------Alignments------------------
         # Top Widget
         self.currentModeTitle.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -118,7 +117,10 @@ class MainWindow(QMainWindow):
         # Bottom Widget
         self.bottomWidget.setStyleSheet("background-color: blue;")
 
-        self.startButton.setStyleSheet(
+        self.primaryButton.setStyleSheet(
+            "background-color: green; color: white;" "font-size: 25px;"
+        )
+        self.secondaryButton.setStyleSheet(
             "background-color: green; color: white;" "font-size: 25px;"
         )
 
@@ -146,13 +148,53 @@ class MainWindow(QMainWindow):
         self.midLayout.addWidget(self.pickTime2)
         self.midLayout.addWidget(self.pickTime3)
         # Bottom Layout
-        self.bottomLayout.addWidget(self.startButton)
+        self.bottomLayout.addWidget(self.secondaryButton)
+        self.bottomLayout.addWidget(self.primaryButton)
 
     def checkButtonConnections(self):
+        self.modeButton.clicked.connect(self.onButtonClick)
         self.pickTime1.clicked.connect(self.onButtonClick)
         self.pickTime2.clicked.connect(self.onButtonClick)
         self.pickTime3.clicked.connect(self.onButtonClick)
-        self.startButton.clicked.connect(self.onButtonClick)
+        self.primaryButton.clicked.connect(self.onPrimaryButtonClicked)
+        self.secondaryButton.clicked.connect(self.onSecondaryButtonClicked)
+
+    def onPrimaryButtonClicked(self):  # Orignilly start button
+        if not self.timerLogic.isStarted:
+            self.timerDuration = int(self.timeLabel.text())
+            self.timerLogic = coreTimerLogic.Timer(self.timerDuration)
+            self.timeLabel.setText(str(self.timerLogic.duration))
+            self.timerLogic.start()
+            if self.timerLogic.isStarted:
+                self.ticker()
+                self.primaryButton.setText("Pause")
+                self.secondaryButton.setHidden(False)
+        elif not self.timerLogic.isPaused and self.timerLogic.isStarted:
+            self.timerLogic.pause()
+            self.primaryButton.setText("Resume")
+        elif self.timerLogic.isPaused and self.timerLogic.isStarted:
+            self.timerLogic.resume()
+            self.primaryButton.setText("Pause")
+
+    def onSecondaryButtonClicked(self):  # Originally reset Button
+        if self.timerLogic.isStarted:
+            self.timerLogic.reset()
+            self.primaryButton.setText("Start")
+            self.secondaryButton.setHidden(True)
+            self.timeLabel.setText("0")
+
+    def ticker(self):
+        self.qTimer = QTimer()
+        self.qTimer.timeout.connect(self.updateUI)
+        self.qTimer.start(10)
+
+    def updateUI(self):
+        if self.timerLogic.isPaused:
+            return
+        print(self.timerLogic.isPaused)
+        print("UI updated")
+        self.remainingTime = self.timerLogic.updateTime()
+        self.timeLabel.setText(self.remainingTime)
 
     def onButtonClick(self):
         print("Button clicked!")
