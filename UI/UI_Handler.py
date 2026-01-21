@@ -85,7 +85,9 @@ class MainWindow(QMainWindow):
         # -------Alignments------------------
         # Top Widget
         self.currentModeTitle.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.timeLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.timeLabel.setAlignment(
+            Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignHCenter
+        )
         # Mid Widget
         # Bottom Top Widget
 
@@ -100,14 +102,16 @@ class MainWindow(QMainWindow):
             "padding: 5px;"
             "border-radius: 5px;"
             "font-size: 25px;"
+            "font-weight: Bold;"
             # "border: 2px solid white;"
         )
         self.timeLabel.setStyleSheet(
             # "background-color: gray;"
             "color: #EEEEEE;"
-            "font-size: 65px;"
+            "font-size: 60px;"
             "border-radius: 30px;"
             "padding: 10px;"
+            "font-weight: Bold;"
             "border: 2px solid white;"
         )
 
@@ -116,6 +120,7 @@ class MainWindow(QMainWindow):
             "padding: 5px;"
             "border-radius: 25px;"
             "font-size: 20px;"
+            "font-weight: Bold;"
             "border: 2px solid white;"
         )
         self.currentModeTitle.setFont(QFont("Arial"))
@@ -128,6 +133,7 @@ class MainWindow(QMainWindow):
             "color: #EEEEEE;"
             "font-size: 20px;"
             "border-radius: 35px;"
+            "font-weight: Bold;"
             "border: 2px solid white;"
         )
         self.pickTime1.setStyleSheet(pickTimeLabelStyle)
@@ -136,18 +142,30 @@ class MainWindow(QMainWindow):
         # Bottom Widget
         # self.bottomWidget.setStyleSheet("background-color: blue;")
 
-        self.primaryButton.setStyleSheet(
+        self.primaryButtonBlueState = (
             "background-color: #468A9A;"
             "color: #EEEEEE;"
             "color: white;"
             "font-size: 30px;"
+            "font-weight: Bold;"
             "border-radius: 35px;"
         )
+        self.primaryButtonRedState = (
+            "background-color: #541212;"
+            "color: #EEEEEE;"
+            "color: white;"
+            "font-size: 30px;"
+            "font-weight: Bold;"
+            "border-radius: 35px;"
+        )
+
+        self.primaryButton.setStyleSheet(self.primaryButtonBlueState)
         self.secondaryButton.setStyleSheet(
             "background-color: #1f1f1f;"
             "color: #EEEEEE;"
             "color: white;"
             "font-size: 30px;"
+            "font-weight: Bold;"
             "border-radius: 35px;"
         )
 
@@ -186,7 +204,7 @@ class MainWindow(QMainWindow):
 
     def onPrimaryButtonClicked(self):  # Orignilly start button
         if self.currentMode == "Timer":
-            if not self.timerLogic.isStarted:
+            if not self.timerLogic.isStarted:  # Start
                 try:
                     timerDuration = int(self.timeLabel.text())
                     self.timerLogic = coreTimerLogic.Timer(timerDuration)
@@ -199,66 +217,38 @@ class MainWindow(QMainWindow):
                     self.ticker()
                     self.primaryButton.setText("Pause")
                     self.secondaryButton.setHidden(False)
-                    self.primaryButton.setStyleSheet(
-                        "background-color: #541212;"
-                        "color: #EEEEEE;"
-                        "color: white;"
-                        "font-size: 30px;"
-                        "border-radius: 35px;"
-                    )
-            elif not self.timerLogic.isPaused and self.timerLogic.isStarted:
+                    self.primaryButton.setStyleSheet(self.primaryButtonRedState)
+            elif (
+                not self.timerLogic.isPaused and self.timerLogic.isStarted
+            ):  # Paused state
                 self.timerLogic.pause()
                 self.primaryButton.setText("Resume")
-                self.primaryButton.setStyleSheet(
-                    "background-color: #468A9A;"
-                    "color: #EEEEEE;"
-                    "color: white;"
-                    "font-size: 30px;"
-                    "border-radius: 35px;"
-                )
-            elif self.timerLogic.isPaused and self.timerLogic.isStarted:
+                self.primaryButton.setStyleSheet(self.primaryButtonBlueState)
+            elif (
+                self.timerLogic.isPaused and self.timerLogic.isStarted
+            ):  # Resumed State
                 self.timerLogic.resume()
                 self.primaryButton.setText("Pause")
-                self.primaryButton.setStyleSheet(
-                    "background-color: #541212;"
-                    "color: #EEEEEE;"
-                    "color: white;"
-                    "font-size: 30px;"
-                    "border-radius: 35px;"
-                )
+                self.primaryButton.setStyleSheet(self.primaryButtonRedState)
         elif self.currentMode == "Stopwatch":
-            if not self.stopwatchLogic.isStarted:
+            if not self.stopwatchLogic.isStarted:  # Start
                 self.stopwatchLogic.start()
                 self.ticker()
                 self.primaryButton.setText("Pause")
                 self.secondaryButton.setHidden(False)
-                self.primaryButton.setStyleSheet(
-                    "background-color: #541212;"
-                    "color: #EEEEEE;"
-                    "color: white;"
-                    "font-size: 30px;"
-                    "border-radius: 35px;"
-                )
-            elif not self.stopwatchLogic.isPaused and self.stopwatchLogic.isStarted:
+                self.primaryButton.setStyleSheet(self.primaryButtonRedState)
+            elif (
+                not self.stopwatchLogic.isPaused and self.stopwatchLogic.isStarted
+            ):  # Paused State
                 self.stopwatchLogic.pause()
                 self.primaryButton.setText("Resume")
-                self.primaryButton.setStyleSheet(
-                    "background-color: #468A9A;"
-                    "color: #EEEEEE;"
-                    "color: white;"
-                    "font-size: 30px;"
-                    "border-radius: 35px;"
-                )
-            elif self.stopwatchLogic.isPaused and self.stopwatchLogic.isStarted:
+                self.primaryButton.setStyleSheet(self.primaryButtonBlueState)
+            elif (
+                self.stopwatchLogic.isPaused and self.stopwatchLogic.isStarted
+            ):  # Resumed State
                 self.stopwatchLogic.resume()
                 self.primaryButton.setText("Pause")
-                self.primaryButton.setStyleSheet(
-                    "background-color: #541212;"
-                    "color: #EEEEEE;"
-                    "color: white;"
-                    "font-size: 30px;"
-                    "border-radius: 35px;"
-                )
+                self.primaryButton.setStyleSheet(self.primaryButtonRedState)
 
     def onSecondaryButtonClicked(self):  # Originally reset Button
         if self.currentMode == "Timer":
@@ -377,13 +367,7 @@ class MainWindow(QMainWindow):
         timeLabel.setText(timeLabelText)
         primaryButton.setText("Start")
         secondaryButton.setHidden(True)
-        primaryButton.setStyleSheet(
-            "background-color: #468A9A;"
-            "color: #EEEEEE;"
-            "color: white;"
-            "font-size: 30px;"
-            "border-radius: 35px;"
-        )
+        primaryButton.setStyleSheet(self.primaryButtonBlueState)
 
 
 def main():
