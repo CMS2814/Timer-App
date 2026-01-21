@@ -171,17 +171,18 @@ class MainWindow(QMainWindow):
 
     def onPrimaryButtonClicked(self):  # Orignilly start button
         if not self.timerLogic.isStarted:
-            self.timerDuration = self.timeLabel.text()
+            self.timerDuration = int(self.timeLabel.text())
             self.timerLogic = coreTimerLogic.Timer(self.timerDuration)
             self.timeLabel.setText(str(self.timerLogic.duration))
             self.timerLogic.start()
-            self.ticker()
-            self.primaryButton.setText("Pause")
-            self.secondaryButton.setHidden(False)
-        elif not self.timerLogic.isPaused:
+            if self.timerLogic.isStarted:
+                self.ticker()
+                self.primaryButton.setText("Pause")
+                self.secondaryButton.setHidden(False)
+        elif not self.timerLogic.isPaused and self.timerLogic.isStarted:
             self.timerLogic.pause()
             self.primaryButton.setText("Resume")
-        elif self.timerLogic.isPaused:
+        elif self.timerLogic.isPaused and self.timerLogic.isStarted:
             self.timerLogic.resume()
             self.primaryButton.setText("Pause")
 
@@ -200,6 +201,7 @@ class MainWindow(QMainWindow):
     def updateUI(self):
         if self.timerLogic.isPaused:
             return
+        print(self.timerLogic.isPaused)
         print("UI updated")
         self.remainingTime = self.timerLogic.updateTime()
         self.timeLabel.setText(self.remainingTime)
