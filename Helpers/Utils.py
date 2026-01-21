@@ -1,7 +1,7 @@
-# Utils.py
+import datetime
 
 
-def convert_time():
+def convert_time(time):
     pass
 
 

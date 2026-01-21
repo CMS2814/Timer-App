@@ -42,7 +42,8 @@ class Stopwatch:  # To be remade
             currentTime = time.monotonic()
             elapsedTime = currentTime - self.startTime
             print("Elapse time:", elapsedTime)
-            return str(round(elapsedTime, 2))
+            elapsedTimeConverted = timedelta(seconds=elapsedTime)
+            return str(elapsedTimeConverted)[:-4]
 
 
 ## ^^^^^^^^^^^^^^^^^^^^^^^^^## Stopwatch functions ## ^^^^^^^^^^^^^^^^^^^^^^^^^##
@@ -89,8 +90,11 @@ class Timer:
             currentTime = time.monotonic()
             elapsedTime = currentTime - self.startTime
             remainingTime = max(0, self.duration - elapsedTime)
+            remainingTimeConverted = timedelta(seconds=remainingTime)
             print("Remaining time:", remainingTime)
-            return str(round(remainingTime, 2))
+            if remainingTime == 0:
+                self.reset()
+            return str(remainingTimeConverted)[:-4]
 
 
 ## ^^^^^^^^^^^^^^^^^^^^^^^^^## Timer functions ## ^^^^^^^^^^^^^^^^^^^^^^^^^##

@@ -1,43 +1,57 @@
-import sys
-from PyQt5.QtWidgets import *
-from functools import partial
+import time
+from datetime import datetime, timedelta
 
 
-class Example(QWidget):
+class Stopwatch:  # To be remade
     def __init__(self):
-        super().__init__()
-        self.setGeometry(30, 30, 400, 200)
-        self.initUI()
-        self.value = 0
+        self.isPaused = True
+        self.isStarted = False
+        self.startTime = None
+        self.time = 0
 
-    def initUI(self):
-        self.button1 = QPushButton(self)
-        self.button1.setGeometry(40, 40, 100, 50)
-        self.button1.setText("Button 1")
+    def start(self):
+        self.isPaused = False
+        self.isStarted = True
+        self.startTime = time.monotonic()
+        print("Stopwatch started")
 
-        self.button2 = QPushButton(self)
-        self.button2.setGeometry(150, 40, 100, 50)
-        self.button2.setText("Button 2")
+    def pause(self):
+        if not self.isPaused:
+            self.isPaused = True
+            print("Stopwatch paused")
 
-        self.btn_grp = QButtonGroup()
-        self.btn_grp.setExclusive(True)
-        self.btn_grp.addButton(self.button1)
-        self.btn_grp.addButton(self.button2)
+    def resume(self):
+        if self.isPaused:
+            self.isPaused = False
+            print("Stopwatch resumed")
 
-        self.btn_grp.buttonClicked.connect(self.on_click)
+    def reset(self):
+        if self.isStarted:
+            self.isStarted = False
+            self.startTime = None
+            self.isPaused = True
+            print("Stopwatch reset")
 
-        self.show()
+    def format_td(seconds, digits=3):
+        isec, fsec = divmod(round(seconds * 10**digits), 10**digits)
+        return f"{timedelta(seconds=isec)}.{fsec:0{digits}.0f}"
 
-    def on_click(self, btn):
-        if btn.text() == "Button 1":
-            self.value = 1
-            print(self.value)
-        elif btn.text() == "Button 2":
-            self.value = 2
-            print(self.value)
+    def updateTime(self):
+        if not self.startTime:
+            return
+        if not self.isPaused:
+            currentTime = time.monotonic()
+            elapsedTime = currentTime - self.startTime
+            # elapsedTimeStr = time.strftime("%H:%M:%S", time.gmtime(elapsedTime))
+            elapsedTimeTD = timedelta(seconds=elapsedTime)
+            elapsedTimeStr = str(elapsedTimeTD)[:-4]
+            print("Elapse time:", elapsedTimeStr)
+            return
 
 
 if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    ex = Example()
-    sys.exit(app.exec_())
+    stopwatch = Stopwatch()
+    stopwatch.start()
+    while not stopwatch.isPaused:
+        time.sleep(0.10)
+        stopwatch.updateTime()

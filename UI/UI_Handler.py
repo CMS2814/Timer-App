@@ -12,6 +12,7 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle("Timey")
         self.setGeometry(700, 300, 500, 550)
+        self.setFixedSize(500, 550)
         self.timerLogic = coreTimerLogic.Timer()  # Always set to zero
         self.stopwatchLogic = coreTimerLogic.Stopwatch()
         self.currentMode = "Timer"  # Timer or Stopwatch
@@ -28,7 +29,7 @@ class MainWindow(QMainWindow):
         # /---Buttons/Labels/Etc.
         self.currentModeTitle = QLabel("TIMER", self.topWidget)
         self.modeButton = QPushButton("Stopwatch", self.topWidget)
-        self.timeLabel = QLineEdit("0", self.topWidget)
+        self.timeLabel = QLineEdit("Enter Time(s)", self.topWidget)
         # /---Layouts
         self.topLayout = QVBoxLayout(self.topWidget)
         self.upperTopLayout = QHBoxLayout(self.topBarWidget)
@@ -71,7 +72,7 @@ class MainWindow(QMainWindow):
         self.secondaryButton.setHidden(True)
         # -------Sizes-----------------------
         # Top Widget
-        self.timeLabel.setFixedSize(350, 100)
+        self.timeLabel.setFixedSize(425, 100)
         self.currentModeTitle.setFixedSize(150, 50)
         self.modeButton.setFixedSize(115, 50)
         # Mid Widget
@@ -167,9 +168,13 @@ class MainWindow(QMainWindow):
     def onPrimaryButtonClicked(self):  # Orignilly start button
         if self.currentMode == "Timer":
             if not self.timerLogic.isStarted:
-                self.timerDuration = int(self.timeLabel.text())
-                self.timerLogic = coreTimerLogic.Timer(self.timerDuration)
-                self.timeLabel.setText(str(self.timerLogic.duration))
+                try:
+                    timerDuration = int(self.timeLabel.text())
+                    self.timerLogic = coreTimerLogic.Timer(timerDuration)
+                    self.timeLabel.setText(str(self.timerLogic.duration))
+                except ValueError:
+                    self.timeLabel.setText("Enter Time(s)")
+
                 self.timerLogic.start()
                 if self.timerLogic.isStarted:
                     self.ticker()
@@ -201,7 +206,7 @@ class MainWindow(QMainWindow):
                 self.timerLogic.reset()
                 self.primaryButton.setText("Start")
                 self.secondaryButton.setHidden(True)
-                self.timeLabel.setText("0")
+                self.timeLabel.setText("Enter Time(s)")
         elif self.currentMode == "Stopwatch":
             if self.stopwatchLogic.isStarted and self.stopwatchLogic.isPaused:
                 self.stopwatchLogic.reset()
@@ -229,6 +234,12 @@ class MainWindow(QMainWindow):
             print(self.timerLogic.isPaused)
             remainingTime = self.timerLogic.updateTime()
             self.timeLabel.setText(remainingTime)
+            if (
+                not self.timerLogic.isStarted
+            ):  # Hides secondaryButton when timer finished
+                self.qTimer.stop()
+                self.secondaryButton.setHidden(True)
+                self.primaryButton.setText("Start")
             print("UI updated")
         elif self.currentMode == "Stopwatch":
             if self.stopwatchLogic.isPaused:
