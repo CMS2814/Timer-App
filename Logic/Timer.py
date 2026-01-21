@@ -80,11 +80,12 @@ class Timer:
         if self.isStarted:
             self.isStarted = False
             self.startTime = None
+            self.duration = None
             self.isPaused = True
             print("Timer reset")
 
     def updateTime(self):
-        if not self.startTime or self.duration is None:
+        if not self.startTime or not self.duration:
             return
         if not self.isPaused:
             currentTime = time.monotonic()

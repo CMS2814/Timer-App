@@ -263,29 +263,23 @@ class MainWindow(QMainWindow):
     def onSecondaryButtonClicked(self):  # Originally reset Button
         if self.currentMode == "Timer":
             if self.timerLogic.isStarted:
-                self.timerLogic.reset()
-                self.primaryButton.setText("Start")
-                self.secondaryButton.setHidden(True)
-                self.timeLabel.setText("Enter Time(s)")
-                self.primaryButton.setStyleSheet(
-                    "background-color: #468A9A;"
-                    "color: #EEEEEE;"
-                    "color: white;"
-                    "font-size: 30px;"
-                    "border-radius: 35px;"
+                self.setDefault(
+                    self.timerLogic,
+                    self.stopwatchLogic,
+                    self.primaryButton,
+                    self.secondaryButton,
+                    self.timeLabel,
+                    "Enter Time(s)",
                 )
         elif self.currentMode == "Stopwatch":
             if self.stopwatchLogic.isStarted and self.stopwatchLogic.isPaused:
-                self.stopwatchLogic.reset()
-                self.primaryButton.setText("Start")
-                self.secondaryButton.setHidden(True)
-                self.timeLabel.setText("0")
-                self.primaryButton.setStyleSheet(
-                    "background-color: #468A9A;"
-                    "color: #EEEEEE;"
-                    "color: white;"
-                    "font-size: 30px;"
-                    "border-radius: 35px;"
+                self.setDefault(
+                    self.timerLogic,
+                    self.stopwatchLogic,
+                    self.primaryButton,
+                    self.secondaryButton,
+                    self.timeLabel,
+                    "0",
                 )
 
     def onPickTimeClicked(self, button: QPushButton):
@@ -312,7 +306,14 @@ class MainWindow(QMainWindow):
                 not self.timerLogic.isStarted
             ):  # Hides secondaryButton when timer finished
                 self.qTimer.stop()
-                self.secondaryButton.setHidden(True)
+                self.setDefault(
+                    self.timerLogic,
+                    self.stopwatchLogic,
+                    self.primaryButton,
+                    self.secondaryButton,
+                    self.timeLabel,
+                    "Enter Time(s)",
+                )
                 self.primaryButton.setText("Start")
             print("UI updated")
         elif self.currentMode == "Stopwatch":
@@ -327,19 +328,62 @@ class MainWindow(QMainWindow):
         print(self.currentMode)
         if self.currentMode == "Timer":
             self.currentMode = "Stopwatch"
+            self.timerLogic.reset()
             self.currentModeTitle.setText("STOPWATCH")
             self.modeButton.setText("Timer")
 
             self.pickTime1.setHidden(True)
             self.pickTime2.setHidden(True)
             self.pickTime3.setHidden(True)
+
+            self.setDefault(
+                self.timerLogic,
+                self.stopwatchLogic,
+                self.primaryButton,
+                self.secondaryButton,
+                self.timeLabel,
+                "0",
+            )
         elif self.currentMode == "Stopwatch":
+            self.stopwatchLogic.reset()
             self.currentMode = "Timer"
             self.currentModeTitle.setText("TIMER")
             self.modeButton.setText("Stopwatch")
+
             self.pickTime1.setHidden(False)
             self.pickTime2.setHidden(False)
             self.pickTime3.setHidden(False)
+
+            self.setDefault(
+                self.timerLogic,
+                self.stopwatchLogic,
+                self.primaryButton,
+                self.secondaryButton,
+                self.timeLabel,
+                "Enter Time(s)",
+            )
+
+    def setDefault(
+        self,
+        logic1: coreTimerLogic.Timer,
+        logic2: coreTimerLogic.Stopwatch,
+        primaryButton: QPushButton,
+        secondaryButton: QPushButton,
+        timeLabel: QLineEdit,
+        timeLabelText: str,
+    ):
+        logic1.reset()
+        logic2.reset()
+        timeLabel.setText(timeLabelText)
+        primaryButton.setText("Start")
+        secondaryButton.setHidden(True)
+        primaryButton.setStyleSheet(
+            "background-color: #468A9A;"
+            "color: #EEEEEE;"
+            "color: white;"
+            "font-size: 30px;"
+            "border-radius: 35px;"
+        )
 
 
 def main():
