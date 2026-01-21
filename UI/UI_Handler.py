@@ -183,14 +183,31 @@ class MainWindow(QMainWindow):
                 self.timerLogic.resume()
                 self.primaryButton.setText("Pause")
         elif self.currentMode == "Stopwatch":
-            pass
+            if not self.stopwatchLogic.isStarted:
+                self.stopwatchLogic.start()
+                self.ticker()
+                self.primaryButton.setText("Pause")
+                self.secondaryButton.setHidden(False)
+            elif not self.stopwatchLogic.isPaused and self.stopwatchLogic.isStarted:
+                self.stopwatchLogic.pause()
+                self.primaryButton.setText("Resume")
+            elif self.stopwatchLogic.isPaused and self.stopwatchLogic.isStarted:
+                self.stopwatchLogic.resume()
+                self.primaryButton.setText("Pause")
 
     def onSecondaryButtonClicked(self):  # Originally reset Button
-        if self.timerLogic.isStarted:
-            self.timerLogic.reset()
-            self.primaryButton.setText("Start")
-            self.secondaryButton.setHidden(True)
-            self.timeLabel.setText("0")
+        if self.currentMode == "Timer":
+            if self.timerLogic.isStarted:
+                self.timerLogic.reset()
+                self.primaryButton.setText("Start")
+                self.secondaryButton.setHidden(True)
+                self.timeLabel.setText("0")
+        elif self.currentMode == "Stopwatch":
+            if self.stopwatchLogic.isStarted and self.stopwatchLogic.isPaused:
+                self.stopwatchLogic.reset()
+                self.primaryButton.setText("Start")
+                self.secondaryButton.setHidden(True)
+                self.timeLabel.setText("0")
 
     def onPickTimeClicked(self, button: QPushButton):
         if button.text() == "10m":
@@ -202,16 +219,24 @@ class MainWindow(QMainWindow):
 
     def ticker(self):
         self.qTimer = QTimer()
-        self.qTimer.timeout.connect(self.updateUI)
         self.qTimer.start(1)
+        self.qTimer.timeout.connect(self.updateUI)
 
     def updateUI(self):
-        if self.timerLogic.isPaused:
-            return
-        print(self.timerLogic.isPaused)
-        print("UI updated")
-        self.remainingTime = self.timerLogic.updateTime()
-        self.timeLabel.setText(self.remainingTime)
+        if self.currentMode == "Timer":
+            if self.timerLogic.isPaused:
+                return
+            print(self.timerLogic.isPaused)
+            remainingTime = self.timerLogic.updateTime()
+            self.timeLabel.setText(remainingTime)
+            print("UI updated")
+        elif self.currentMode == "Stopwatch":
+            if self.stopwatchLogic.isPaused:
+                return
+            print(self.stopwatchLogic.isPaused)
+            elapsedTime = self.stopwatchLogic.updateTime()
+            self.timeLabel.setText(elapsedTime)
+            print("UI updated")
 
     def onModeButtonClick(self):
         print(self.currentMode)

@@ -16,24 +16,24 @@ class Stopwatch:  # To be remade
         self.isPaused = False
         self.isStarted = True
         self.startTime = time.monotonic()
-        print("Timer started")
+        print("Stopwatch started")
 
     def pause(self):
         if not self.isPaused:
             self.isPaused = True
-            print("Timer paused")
+            print("Stopwatch paused")
 
     def resume(self):
         if self.isPaused:
             self.isPaused = False
-            print("Timer resumed")
+            print("Stopwatch resumed")
 
     def reset(self):
         if self.isStarted:
             self.isStarted = False
             self.startTime = None
             self.isPaused = True
-            print("Timer reset")
+            print("Stopwatch reset")
 
     def updateTime(self):
         if not self.startTime:
