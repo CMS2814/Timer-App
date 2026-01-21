@@ -13,8 +13,8 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("Timey")
         self.setGeometry(700, 300, 500, 550)
         self.timerLogic = coreTimerLogic.Timer()  # Always set to zero
-        self.timerLogic.isPaused = True
-        self.currentMode = "Timer"
+        self.stopwatchLogic = coreTimerLogic.Stopwatch()
+        self.currentMode = "Timer"  # Timer or Stopwatch
 
         # Main Properties
         self.mainWidget = QWidget(self)
@@ -27,7 +27,7 @@ class MainWindow(QMainWindow):
         self.topBarWidget = QWidget(self.topWidget)
         # /---Buttons/Labels/Etc.
         self.currentModeTitle = QLabel("TIMER", self.topWidget)
-        self.modeButton = QPushButton("Timer", self.topWidget)
+        self.modeButton = QPushButton("Stopwatch", self.topWidget)
         self.timeLabel = QLineEdit("0", self.topWidget)
         # /---Layouts
         self.topLayout = QVBoxLayout(self.topWidget)
@@ -159,27 +159,31 @@ class MainWindow(QMainWindow):
         self.bottomLayout.addWidget(self.primaryButton)
 
     def checkButtonConnections(self):
-        self.modeButton.clicked.connect(self.onButtonClick)
+        self.modeButton.clicked.connect(self.onModeButtonClick)
         self.pickTimeGroup.buttonClicked.connect(self.onPickTimeClicked)
         self.primaryButton.clicked.connect(self.onPrimaryButtonClicked)
         self.secondaryButton.clicked.connect(self.onSecondaryButtonClicked)
 
     def onPrimaryButtonClicked(self):  # Orignilly start button
-        if not self.timerLogic.isStarted:
-            self.timerDuration = int(self.timeLabel.text())
-            self.timerLogic = coreTimerLogic.Timer(self.timerDuration)
-            self.timeLabel.setText(str(self.timerLogic.duration))
-            self.timerLogic.start()
-            if self.timerLogic.isStarted:
-                self.ticker()
+        if self.currentMode == "Timer":
+            if not self.timerLogic.isStarted:
+                self.timerDuration = int(self.timeLabel.text())
+                self.timerLogic = coreTimerLogic.Timer(self.timerDuration)
+                self.timeLabel.setText(str(self.timerLogic.duration))
+                self.timerLogic.start()
+                if self.timerLogic.isStarted:
+                    self.ticker()
+                    self.primaryButton.setText("Pause")
+                    self.secondaryButton.setHidden(False)
+            elif not self.timerLogic.isPaused and self.timerLogic.isStarted:
+                self.timerLogic.pause()
+                self.primaryButton.setText("Resume")
+
+            elif self.timerLogic.isPaused and self.timerLogic.isStarted:
+                self.timerLogic.resume()
                 self.primaryButton.setText("Pause")
-                self.secondaryButton.setHidden(False)
-        elif not self.timerLogic.isPaused and self.timerLogic.isStarted:
-            self.timerLogic.pause()
-            self.primaryButton.setText("Resume")
-        elif self.timerLogic.isPaused and self.timerLogic.isStarted:
-            self.timerLogic.resume()
-            self.primaryButton.setText("Pause")
+        elif self.currentMode == "Stopwatch":
+            pass
 
     def onSecondaryButtonClicked(self):  # Originally reset Button
         if self.timerLogic.isStarted:
@@ -188,7 +192,7 @@ class MainWindow(QMainWindow):
             self.secondaryButton.setHidden(True)
             self.timeLabel.setText("0")
 
-    def onPickTimeClicked(self, button):
+    def onPickTimeClicked(self, button: QPushButton):
         if button.text() == "10m":
             self.timeLabel.setText(str(10 * 60))
         elif button.text() == "15m":
@@ -199,7 +203,7 @@ class MainWindow(QMainWindow):
     def ticker(self):
         self.qTimer = QTimer()
         self.qTimer.timeout.connect(self.updateUI)
-        self.qTimer.start(10)
+        self.qTimer.start(1)
 
     def updateUI(self):
         if self.timerLogic.isPaused:
@@ -209,8 +213,16 @@ class MainWindow(QMainWindow):
         self.remainingTime = self.timerLogic.updateTime()
         self.timeLabel.setText(self.remainingTime)
 
-    def onButtonClick(self):
-        print("Button clicked!")
+    def onModeButtonClick(self):
+        print(self.currentMode)
+        if self.currentMode == "Timer":
+            self.currentMode = "Stopwatch"
+            self.currentModeTitle.setText("STOPWATCH")
+            self.modeButton.setText("Timer")
+        elif self.currentMode == "Stopwatch":
+            self.currentMode = "Timer"
+            self.currentModeTitle.setText("TIMER")
+            self.modeButton.setText("Stopwatch")
 
 
 def main():
