@@ -41,12 +41,12 @@ class MainWindow(QMainWindow):
         self.pickTime2 = QPushButton("15m", self.midWidget)
         self.pickTime3 = QPushButton("30m", self.midWidget)
 
-        self.pickTimeGroup = QButtonGroup()
-        self.pickTimeGroup.setExclusive(True)
+        self.pickTimeButtonGroup = QButtonGroup()
+        self.pickTimeButtonGroup.setExclusive(True)
 
-        self.pickTimeGroup.addButton(self.pickTime1)
-        self.pickTimeGroup.addButton(self.pickTime2)
-        self.pickTimeGroup.addButton(self.pickTime3)
+        self.pickTimeButtonGroup.addButton(self.pickTime1)
+        self.pickTimeButtonGroup.addButton(self.pickTime2)
+        self.pickTimeButtonGroup.addButton(self.pickTime3)
         # /---Layouts
         self.midLayout = QHBoxLayout(self.midWidget)
 
@@ -71,9 +71,9 @@ class MainWindow(QMainWindow):
         self.secondaryButton.setHidden(True)
         # -------Sizes-----------------------
         # Top Widget
-        self.currentModeTitle.setFixedSize(100, 50)
         self.timeLabel.setFixedSize(350, 100)
-        self.modeButton.setFixedSize(75, 50)
+        self.currentModeTitle.setFixedSize(150, 50)
+        self.modeButton.setFixedSize(115, 50)
         # Mid Widget
         self.pickTime1.setFixedSize(70, 70)
         self.pickTime2.setFixedSize(70, 70)
@@ -148,7 +148,7 @@ class MainWindow(QMainWindow):
         self.upperTopLayout.addWidget(
             self.currentModeTitle, alignment=Qt.AlignmentFlag.AlignLeft
         )
-        self.upperTopLayout.setSpacing(95)  # default 95
+        self.upperTopLayout.setSpacing(35)  # default 35
 
         # Mid Layout
         self.midLayout.addWidget(self.pickTime1)
@@ -160,7 +160,7 @@ class MainWindow(QMainWindow):
 
     def checkButtonConnections(self):
         self.modeButton.clicked.connect(self.onModeButtonClick)
-        self.pickTimeGroup.buttonClicked.connect(self.onPickTimeClicked)
+        self.pickTimeButtonGroup.buttonClicked.connect(self.onPickTimeClicked)
         self.primaryButton.clicked.connect(self.onPrimaryButtonClicked)
         self.secondaryButton.clicked.connect(self.onSecondaryButtonClicked)
 
@@ -219,10 +219,17 @@ class MainWindow(QMainWindow):
             self.currentMode = "Stopwatch"
             self.currentModeTitle.setText("STOPWATCH")
             self.modeButton.setText("Timer")
+
+            self.pickTime1.setHidden(True)
+            self.pickTime2.setHidden(True)
+            self.pickTime3.setHidden(True)
         elif self.currentMode == "Stopwatch":
             self.currentMode = "Timer"
             self.currentModeTitle.setText("TIMER")
             self.modeButton.setText("Stopwatch")
+            self.pickTime1.setHidden(False)
+            self.pickTime2.setHidden(False)
+            self.pickTime3.setHidden(False)
 
 
 def main():
