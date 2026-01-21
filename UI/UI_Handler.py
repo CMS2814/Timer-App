@@ -73,7 +73,7 @@ class MainWindow(QMainWindow):
         # -------Sizes-----------------------
         # Top Widget
         self.timeLabel.setFixedSize(425, 100)
-        self.currentModeTitle.setFixedSize(150, 50)
+        self.currentModeTitle.setFixedSize(175, 50)
         self.modeButton.setFixedSize(115, 50)
         # Mid Widget
         self.pickTime1.setFixedSize(70, 70)
@@ -90,46 +90,65 @@ class MainWindow(QMainWindow):
         # Bottom Top Widget
 
         # -------Styles----------------------
-        self.mainWidget.setStyleSheet("background-color: white;")
+        self.mainWidget.setStyleSheet("background-color: #0F0E0E;")
         # Top Widget
-        self.topWidget.setStyleSheet("background-color: red;")
+        # self.topWidget.setStyleSheet("background-color: red;")
 
         self.currentModeTitle.setStyleSheet(
-            "background-color: lightgray; "
+            # "background-color: lightgray; "
+            "color: #EEEEEE;"
             "padding: 5px;"
             "border-radius: 5px;"
-            "font-size: 20px;"
+            "font-size: 25px;"
+            # "border: 2px solid white;"
         )
         self.timeLabel.setStyleSheet(
-            "background-color: gray;"
-            "color: black;"
+            # "background-color: gray;"
+            "color: #EEEEEE;"
             "font-size: 65px;"
+            "border-radius: 30px;"
             "padding: 10px;"
+            "border: 2px solid white;"
         )
 
-        self.modeButton.setStyleSheet("background-color: blue; font-size: 20px;")
+        self.modeButton.setStyleSheet(
+            "color: #EEEEEE;"
+            "padding: 5px;"
+            "border-radius: 25px;"
+            "font-size: 20px;"
+            "border: 2px solid white;"
+        )
         self.currentModeTitle.setFont(QFont("Arial"))
         # Mid Widget
-        self.midWidget.setStyleSheet("background-color: green;")
+        # self.midWidget.setStyleSheet("background-color: green;")
 
         # Pick Time Labels-------
         pickTimeLabelStyle = (
-            "background-color: yellow;"
-            "color: black;"
+            # "background-color: yellow;"
+            "color: #EEEEEE;"
             "font-size: 20px;"
             "border-radius: 35px;"
+            "border: 2px solid white;"
         )
         self.pickTime1.setStyleSheet(pickTimeLabelStyle)
         self.pickTime2.setStyleSheet(pickTimeLabelStyle)
         self.pickTime3.setStyleSheet(pickTimeLabelStyle)
         # Bottom Widget
-        self.bottomWidget.setStyleSheet("background-color: blue;")
+        # self.bottomWidget.setStyleSheet("background-color: blue;")
 
         self.primaryButton.setStyleSheet(
-            "background-color: green; color: white;" "font-size: 25px;"
+            "background-color: #468A9A;"
+            "color: #EEEEEE;"
+            "color: white;"
+            "font-size: 30px;"
+            "border-radius: 35px;"
         )
         self.secondaryButton.setStyleSheet(
-            "background-color: green; color: white;" "font-size: 25px;"
+            "background-color: #1f1f1f;"
+            "color: #EEEEEE;"
+            "color: white;"
+            "font-size: 30px;"
+            "border-radius: 35px;"
         )
 
     def loadLayouts(self):
@@ -149,7 +168,7 @@ class MainWindow(QMainWindow):
         self.upperTopLayout.addWidget(
             self.currentModeTitle, alignment=Qt.AlignmentFlag.AlignLeft
         )
-        self.upperTopLayout.setSpacing(35)  # default 35
+        self.upperTopLayout.setSpacing(25)  # default 35
 
         # Mid Layout
         self.midLayout.addWidget(self.pickTime1)
@@ -180,25 +199,66 @@ class MainWindow(QMainWindow):
                     self.ticker()
                     self.primaryButton.setText("Pause")
                     self.secondaryButton.setHidden(False)
+                    self.primaryButton.setStyleSheet(
+                        "background-color: #541212;"
+                        "color: #EEEEEE;"
+                        "color: white;"
+                        "font-size: 30px;"
+                        "border-radius: 35px;"
+                    )
             elif not self.timerLogic.isPaused and self.timerLogic.isStarted:
                 self.timerLogic.pause()
                 self.primaryButton.setText("Resume")
-
+                self.primaryButton.setStyleSheet(
+                    "background-color: #468A9A;"
+                    "color: #EEEEEE;"
+                    "color: white;"
+                    "font-size: 30px;"
+                    "border-radius: 35px;"
+                )
             elif self.timerLogic.isPaused and self.timerLogic.isStarted:
                 self.timerLogic.resume()
                 self.primaryButton.setText("Pause")
+                self.primaryButton.setStyleSheet(
+                    "background-color: #541212;"
+                    "color: #EEEEEE;"
+                    "color: white;"
+                    "font-size: 30px;"
+                    "border-radius: 35px;"
+                )
         elif self.currentMode == "Stopwatch":
             if not self.stopwatchLogic.isStarted:
                 self.stopwatchLogic.start()
                 self.ticker()
                 self.primaryButton.setText("Pause")
                 self.secondaryButton.setHidden(False)
+                self.primaryButton.setStyleSheet(
+                    "background-color: #541212;"
+                    "color: #EEEEEE;"
+                    "color: white;"
+                    "font-size: 30px;"
+                    "border-radius: 35px;"
+                )
             elif not self.stopwatchLogic.isPaused and self.stopwatchLogic.isStarted:
                 self.stopwatchLogic.pause()
                 self.primaryButton.setText("Resume")
+                self.primaryButton.setStyleSheet(
+                    "background-color: #468A9A;"
+                    "color: #EEEEEE;"
+                    "color: white;"
+                    "font-size: 30px;"
+                    "border-radius: 35px;"
+                )
             elif self.stopwatchLogic.isPaused and self.stopwatchLogic.isStarted:
                 self.stopwatchLogic.resume()
                 self.primaryButton.setText("Pause")
+                self.primaryButton.setStyleSheet(
+                    "background-color: #541212;"
+                    "color: #EEEEEE;"
+                    "color: white;"
+                    "font-size: 30px;"
+                    "border-radius: 35px;"
+                )
 
     def onSecondaryButtonClicked(self):  # Originally reset Button
         if self.currentMode == "Timer":
@@ -207,12 +267,26 @@ class MainWindow(QMainWindow):
                 self.primaryButton.setText("Start")
                 self.secondaryButton.setHidden(True)
                 self.timeLabel.setText("Enter Time(s)")
+                self.primaryButton.setStyleSheet(
+                    "background-color: #468A9A;"
+                    "color: #EEEEEE;"
+                    "color: white;"
+                    "font-size: 30px;"
+                    "border-radius: 35px;"
+                )
         elif self.currentMode == "Stopwatch":
             if self.stopwatchLogic.isStarted and self.stopwatchLogic.isPaused:
                 self.stopwatchLogic.reset()
                 self.primaryButton.setText("Start")
                 self.secondaryButton.setHidden(True)
                 self.timeLabel.setText("0")
+                self.primaryButton.setStyleSheet(
+                    "background-color: #468A9A;"
+                    "color: #EEEEEE;"
+                    "color: white;"
+                    "font-size: 30px;"
+                    "border-radius: 35px;"
+                )
 
     def onPickTimeClicked(self, button: QPushButton):
         if button.text() == "10m":
