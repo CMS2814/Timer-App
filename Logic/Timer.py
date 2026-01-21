@@ -70,11 +70,7 @@ class Timer:
         self.isPaused = True
         self.isStarted = False
         self.startTime = None
-        if timeDuration:
-            try:
-                self.duration = int(timeDuration)
-            except ValueError:
-                self.duration = None
+        self.duration = timeDuration
 
     def start(self):
         if not self.duration:
@@ -83,6 +79,7 @@ class Timer:
         self.isStarted = True
         self.startTime = time.monotonic()
         print("Timer started")
+        print(self.duration)
 
     def pause(self):
         if not self.isPaused:
